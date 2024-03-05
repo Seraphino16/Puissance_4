@@ -104,8 +104,8 @@ class Puissance4 {
         let j = x;
 
         while(j < this.width - 1 && cell.id === this.table[y][j+1].id) {
-        j++;
-        pointedCell = this.table[y][j];
+            j++;
+            pointedCell = this.table[y][j];
         }
 
         if(this.table[y][j-3] !== undefined
@@ -113,8 +113,49 @@ class Puissance4 {
             && cell.id === this.table[y][j-2].id
             && cell.id === this.table[y][j-3].id) {
                 alert("PLAYER " + cell.id + " WIN !");
-            }
+        }
         
+        // Diagonal / verification
+        pointedCell = cell;
+        j = x;
+        let i = y;
+
+        while(j < this.width - 1 && i - 1 >= 0
+            && cell.id === this.table[i-1][j+1].id) {
+                j++;
+                i--;
+                pointedCell = this.table[i][j];
+         }
+
+        if(this.table[i+3] !== undefined 
+            && this.table[i+3][j-3] !== undefined
+            && cell.id === this.table[i+1][j-1].id
+            && cell.id === this.table[i+2][j-2].id
+            && cell.id === this.table[i+3][j-3].id) {
+
+                alert("PLAYER " + cell.id + " WIN !");
+        }
+
+        // Diagonal \ verification
+        pointedCell = cell;
+        j = x;
+        i = y;
+
+        while(j - 1 >= 0 && i - 1 >= 0
+            && cell.id === this.table[i-1][j-1].id) {
+                j--;
+                i--;
+                pointedCell = this.table[i][j];
+         }
+
+        if(this.table[i+3] !== undefined
+            && this.table[i+3][j+3] !== undefined
+            && cell.id === this.table[i+1][j+1].id
+            && cell.id === this.table[i+2][j+2].id
+            && cell.id === this.table[i+3][j+3].id) {
+
+                alert("PLAYER " + cell.id + " WIN !");
+        }
         
     }
 }
