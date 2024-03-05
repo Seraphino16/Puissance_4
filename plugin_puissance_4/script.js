@@ -60,17 +60,24 @@ class Puissance4 {
         this.container.appendChild(table);
     }
 
-    dropToken (column) {
-        console.log("You play column : " + column);
+    dropToken (cell) {
 
-
+        let column = cell.x
 
         let rowId = this.height - 1;
         while(rowId >= 0 && this.table[rowId][column].color) {
             rowId--
         }
+
+        if(!this.table[rowId]) {
+            alert("Column is full");
+            return
+        }
         
-        this.table[rowId][column].updateColor(this.currentPlayer.color);
+        let cellPointed = this.table[rowId][column];
+        cellPointed.updateColor(this.currentPlayer);
+
+        this.checkVictory(rowId, column);
 
 
         if(this.currentPlayer === this.player1) {
@@ -78,6 +85,37 @@ class Puissance4 {
         } else {
             this.currentPlayer = this.player1;
         }
+    }
+
+
+    checkVictory (y, x) {
+        let cell = this.table[y][x];
+
+        //vertical verification        
+        if(y - 1 >= 0 && this.table[y+3] !== undefined
+            && cell.id === this.table[y+1][x].id
+            && cell.id === this.table[y+2][x].id
+            && cell.id === this.table[y+3][x].id) {
+            alert("PLAYER " + cell.id + " WIN !");
+        }
+
+        //horizontal verification
+        let pointedCell = cell
+        let j = x;
+
+        while(j < this.width - 1 && cell.id === this.table[y][j+1].id) {
+        j++;
+        pointedCell = this.table[y][j];
+        }
+
+        if(this.table[y][j-3] !== undefined
+            && cell.id === this.table[y][j-1].id
+            && cell.id === this.table[y][j-2].id
+            && cell.id === this.table[y][j-3].id) {
+                alert("PLAYER " + cell.id + " WIN !");
+            }
+        
+        
     }
 }
 
@@ -88,7 +126,7 @@ class Cell {
         this.color = null;
         this.createDOM();
 
-        this.dom.addEventListener("click", () => game.dropToken(this.x));
+        this.dom.addEventListener("click", () => game.dropToken(this));
     }
 
     createDOM () {
@@ -97,8 +135,9 @@ class Cell {
         // return this.dom;
     }
 
-    updateColor (color) {
-        this.color = color;
+    updateColor (player) {
+        this.id = player.id
+        this.color = player.color;
         this.dom.style.backgroundColor = this.color;
     }
 
