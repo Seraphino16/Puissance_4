@@ -3,8 +3,8 @@ const container = document.getElementById("container-puissance-4");
 document.addEventListener("DOMContentLoaded", () => {
     let game = new Puissance4(7, 6);
 
-    let tableCells = document.querySelectorAll("#container-puissance-4 td");
-    console.log(tableCells);
+    // let tableCells = document.querySelectorAll("#container-puissance-4 td");
+    // console.log(tableCells);
 })
 
 
@@ -85,8 +85,19 @@ class Puissance4 {
         this.container.appendChild(head);
     }
 
+    displayButtons () {
+        let div = document.createElement("div");
+        let cancelButton = document.createElement("button");
+        cancelButton.innerText = "Cancel last move";
+        cancelButton.addEventListener("click", () => this.lastPlayedCell.resetColor());
+
+        div.appendChild(cancelButton);
+        this.container.appendChild(div);
+    }
+
     displayGameBoard () {
         this.displayHead();
+
         this.gameBoard = document.createElement("div");
         this.gameBoard.className = "game-board";
 
@@ -109,6 +120,8 @@ class Puissance4 {
         this.displayPlayer(this.player2);
 
         this.container.appendChild(this.gameBoard);
+
+        this.displayButtons();
     }
 
     dropToken (cell) {
@@ -121,7 +134,6 @@ class Puissance4 {
         }
 
         if(this.table[rowId] === undefined) {
-            console.log("Column full");
             alert("Column is full");
             return
         }
@@ -135,6 +147,7 @@ class Puissance4 {
             this.currentPlayer.updateScore();
         }
 
+        this.lastPlayedCell = cellPointed;
         this.changePlayer()
     }
 
@@ -234,6 +247,10 @@ class Puissance4 {
         }
         
     }
+
+    cancelLastMove () {
+        console.log("Hello");
+    }
 }
 
 class Cell {
@@ -243,6 +260,7 @@ class Cell {
         this.color = null;
         this.createDOM();
 
+        this.game = game;
         this.dom.addEventListener("click", () => game.dropToken(this));
     }
 
@@ -256,6 +274,21 @@ class Cell {
         this.id = player.id
         this.color = player.color;
         this.dom.style.backgroundColor = this.color;
+    }
+
+    resetColor () {
+        console.log("NOOOO");
+        
+        if(this.id) {
+            this.game.changePlayer();
+        }
+        
+
+        this.color = null;
+        this.dom.style.backgroundColor = "white";
+        this.id = null;
+
+        
     }
 
    
