@@ -2,9 +2,6 @@ const container = document.getElementById("container-puissance-4");
 
 document.addEventListener("DOMContentLoaded", () => {
     let game = new Puissance4(7, 6);
-
-    // let tableCells = document.querySelectorAll("#container-puissance-4 td");
-    // console.log(tableCells);
 })
 
 
@@ -42,7 +39,6 @@ class Puissance4 {
             let row = this.createRow(i);
             this.table.push(row);
         }
-        console.log(this.table);
     }
 
     displayPlayer (player) {
@@ -87,11 +83,22 @@ class Puissance4 {
 
     displayButtons () {
         let div = document.createElement("div");
+        div.className = "buttonsContainer";
+
         let cancelButton = document.createElement("button");
         cancelButton.innerText = "Cancel last move";
         cancelButton.addEventListener("click", () => this.lastPlayedCell.resetColor());
 
+        let restartButton = document.createElement("button");
+        restartButton.innerText = "Restart";
+        restartButton.addEventListener("click", () => this.restart());
+
+        let resetScoresButton = document.createElement("button");
+        resetScoresButton.innerText = "Reset scores";
+
+
         div.appendChild(cancelButton);
+        div.appendChild(restartButton);
         this.container.appendChild(div);
     }
 
@@ -126,6 +133,10 @@ class Puissance4 {
 
     dropToken (cell) {
 
+        if(cell.isClickable !== true) {
+            return;
+        }
+
         let column = cell.x
 
         let rowId = this.height - 1;
@@ -145,6 +156,12 @@ class Puissance4 {
 
         if(isWin) {
             this.currentPlayer.updateScore();
+
+            this.table.forEach((row) => {
+                row.forEach((cell) => {
+                    cell.isClickable = false;
+                })
+            })
         }
 
         this.lastPlayedCell = cellPointed;
@@ -170,13 +187,27 @@ class Puissance4 {
     checkVictory (y, x) {
         let cell = this.table[y][x];
 
+        this.isFull = true;
+        for(let i = 0; i < this.height - 1; i++) {
+            for(let j = 0; j < this.width; j++) {
+                console.log(this.table[i][j].id)
+                if(this.table[i][j].id === null) {
+                    this.isFull = false;
+                }
+            }
+        }
+
+        if(this.isFull === true) {
+            alert("DRAW");
+            return;
+        }
+
         //vertical verification        
         if(y - 1 >= 0 && this.table[y+3] !== undefined
             && cell.id === this.table[y+1][x].id
             && cell.id === this.table[y+2][x].id
             && cell.id === this.table[y+3][x].id) {
             alert("PLAYER " + cell.id + " WIN !");
-            // alert("Player " + this.currentPlayer.id + "Win");
             return this.currentPlayer;
         }
 
@@ -208,8 +239,6 @@ class Puissance4 {
                 j++;
                 i--;
                 pointedCell = this.table[i][j];
-            return this.currentPlayer;
-
          }
 
         if(this.table[i+3] !== undefined 
@@ -218,7 +247,7 @@ class Puissance4 {
             && cell.id === this.table[i+2][j-2].id
             && cell.id === this.table[i+3][j-3].id) {
 
-                alert("PLAYER " + cell.id + " WIN !");
+            alert("PLAYER " + cell.id + " WIN !");
             return this.currentPlayer;
 
         }
@@ -248,8 +277,16 @@ class Puissance4 {
         
     }
 
-    cancelLastMove () {
-        console.log("Hello");
+    restart () {
+        this.table.forEach((row) => {
+            row.forEach((cell) => {
+                cell.resetColor();
+                cell.isClickable = true;
+            })
+        })
+
+        this.isFull = true;
+        this.currentPlayer = this.player1;
     }
 }
 
@@ -258,9 +295,12 @@ class Cell {
         this.x = x;
         this.y = y;
         this.color = null;
+        this.id = null;
+        this.isClickable = true;
         this.createDOM();
 
         this.game = game;
+
         this.dom.addEventListener("click", () => game.dropToken(this));
     }
 
@@ -277,18 +317,14 @@ class Cell {
     }
 
     resetColor () {
-        console.log("NOOOO");
         
         if(this.id) {
             this.game.changePlayer();
-        }
-        
+        }        
 
         this.color = null;
         this.dom.style.backgroundColor = "white";
-        this.id = null;
-
-        
+        this.id = null;        
     }
 
    
@@ -308,7 +344,6 @@ class Player {
     updateScore () {
         this.score++;
         this.updateScoreDOM();
-        console.log(this.score);
     }
 
     resetScore () {

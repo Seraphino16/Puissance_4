@@ -43,3 +43,20 @@ td {
     border-radius: 100%;
     border: 1px solid black;
 }
+
+.buttonsContainer {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: space-between; */
+}
+
+button {
+    width: 160px;
+    height: 50px;
+    margin: 12px 0;
+    font-size: 1em;
+    border-radius: 12px;
+    border: none;
+}
