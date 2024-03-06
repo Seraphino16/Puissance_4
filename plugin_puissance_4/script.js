@@ -57,8 +57,12 @@ class Puissance4 {
         let playerName = document.createElement("p");
         playerName.innerText = "Player " + player.id;
 
+        // let scoreDisplay = document.createElement("p");
+        // scoreDisplay.innerText = "Score : " + player.score + " pts";
+
         div.appendChild(canvas);
         div.appendChild(playerName);
+        div.appendChild(player.scoreDisplay);
 
         this.gameBoard.appendChild(div);
     }
@@ -125,7 +129,11 @@ class Puissance4 {
         let cellPointed = this.table[rowId][column];
         cellPointed.updateColor(this.currentPlayer);
 
-        this.checkVictory(rowId, column);
+        let isWin = this.checkVictory(rowId, column);
+
+        if(isWin) {
+            this.currentPlayer.updateScore();
+        }
 
         this.changePlayer()
     }
@@ -155,6 +163,8 @@ class Puissance4 {
             && cell.id === this.table[y+2][x].id
             && cell.id === this.table[y+3][x].id) {
             alert("PLAYER " + cell.id + " WIN !");
+            // alert("Player " + this.currentPlayer.id + "Win");
+            return this.currentPlayer;
         }
 
         //horizontal verification
@@ -171,6 +181,8 @@ class Puissance4 {
             && cell.id === this.table[y][j-2].id
             && cell.id === this.table[y][j-3].id) {
                 alert("PLAYER " + cell.id + " WIN !");
+            return this.currentPlayer;
+
         }
         
         // Diagonal / verification
@@ -183,6 +195,8 @@ class Puissance4 {
                 j++;
                 i--;
                 pointedCell = this.table[i][j];
+            return this.currentPlayer;
+
          }
 
         if(this.table[i+3] !== undefined 
@@ -192,6 +206,8 @@ class Puissance4 {
             && cell.id === this.table[i+3][j-3].id) {
 
                 alert("PLAYER " + cell.id + " WIN !");
+            return this.currentPlayer;
+
         }
 
         // Diagonal \ verification
@@ -213,6 +229,8 @@ class Puissance4 {
             && cell.id === this.table[i+3][j+3].id) {
 
                 alert("PLAYER " + cell.id + " WIN !");
+            return this.currentPlayer;
+
         }
         
     }
@@ -248,14 +266,23 @@ class Player {
         this.id = id;
         this.color = color;
         this.score = 0;
+        
+        this.scoreDisplay = document.createElement("p");
+        this.updateScoreDOM();
+       
     }
 
     updateScore () {
         this.score++;
+        this.updateScoreDOM();
         console.log(this.score);
     }
 
     resetScore () {
         this.score = 0;
+    }
+
+    updateScoreDOM () {
+         this.scoreDisplay.innerText = "Score : " + this.score + " pts";
     }
 }
