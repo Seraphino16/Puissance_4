@@ -1,20 +1,7 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: rgb(102, 93, 93);
-}
 
-div {
-    margin: auto;
-    /* width: 70vw;
-    height: 70vh; */
-    background-color: rgb(134, 167, 179)
-}
-
-/* .game-board {
+.game-board{
     display: flex;
+    padding: 12px;
 }
 
 h3 {
@@ -22,31 +9,31 @@ h3 {
     margin-left: 12px;
 }
 
-.head {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    /* display: inline; */
-}
-
 .player {
     width: 10vw;
     text-align: center;
 }
 
+.head {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 canvas {
-    background-color: red;
     border-radius: 100%;
+    /* margin-bottom: 12px; */
     width: 40px;
     height: 40px;
-    /* margin-bottom: 12px; */
 }
 
 table {
     background-color: blue;
     margin: auto;
     border-spacing: 10px;
+    border-radius: 12px;
+    border: 1px solid black;
 }
 
 td {
@@ -54,4 +41,5 @@ td {
     width: 80px;
     height: 80px;
     border-radius: 100%;
-} */
+    border: 1px solid black;
+}

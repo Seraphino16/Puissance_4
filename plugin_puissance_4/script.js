@@ -16,6 +16,7 @@ class Puissance4 {
         this.width = width;
         this.height = height;
         this.container = container;
+        
 
         this.player1 = new Player(1, "red");
         this.player2 = new Player(2, "yellow");
@@ -44,7 +45,49 @@ class Puissance4 {
         console.log(this.table);
     }
 
+    displayPlayer (player) {
+        let div = document.createElement("div");
+        div.className = "player";
+
+        let canvas = document.createElement("canvas");
+        canvas.style.width = "80px";
+        canvas.style.height = "80px";
+        canvas.style.backgroundColor = player.color;
+
+        let playerName = document.createElement("p");
+        playerName.innerText = "Player " + player.id;
+
+        div.appendChild(canvas);
+        div.appendChild(playerName);
+
+        this.gameBoard.appendChild(div);
+    }
+
+    displayHead () {
+        let head = document.createElement("div");
+        head.className = "head";
+
+        this.canvas = document.createElement("canvas");
+        this.canvas.style.backgroundColor = this.currentPlayer.color;
+        // canvas.style.width = "40px";
+        // canvas.style.height = "40px";
+
+        this.txt = document.createElement("h3");
+        this.txt.innerText = "Player " + this.currentPlayer.id + ", it's your turn !";
+
+        head.appendChild(this.canvas);
+        head.appendChild(this.txt);
+
+        this.container.appendChild(head);
+    }
+
     displayGameBoard () {
+        this.displayHead();
+        this.gameBoard = document.createElement("div");
+        this.gameBoard.className = "game-board";
+
+        this.displayPlayer(this.player1);
+
         let table = document.createElement("table");
 
         this.table.forEach((row) => {
@@ -57,7 +100,11 @@ class Puissance4 {
             table.appendChild(rowDOM);
         })
     
-        this.container.appendChild(table);
+        this.gameBoard.appendChild(table);
+
+        this.displayPlayer(this.player2);
+
+        this.container.appendChild(this.gameBoard);
     }
 
     dropToken (cell) {
@@ -66,10 +113,11 @@ class Puissance4 {
 
         let rowId = this.height - 1;
         while(rowId >= 0 && this.table[rowId][column].color) {
-            rowId--
+            rowId--   
         }
 
-        if(!this.table[rowId]) {
+        if(this.table[rowId] === undefined) {
+            console.log("Column full");
             alert("Column is full");
             return
         }
@@ -79,13 +127,23 @@ class Puissance4 {
 
         this.checkVictory(rowId, column);
 
+        this.changePlayer()
+    }
 
+    changePlayer () {
         if(this.currentPlayer === this.player1) {
             this.currentPlayer = this.player2;
         } else {
             this.currentPlayer = this.player1;
         }
+        this.updateHead();
     }
+
+    updateHead () {
+        this.canvas.style.backgroundColor = this.currentPlayer.color;
+        this.txt.innerText = "Player " + this.currentPlayer.id + ", it's your turn !";
+    }
+
 
 
     checkVictory (y, x) {
@@ -189,8 +247,15 @@ class Player {
     constructor (id, color) {
         this.id = id;
         this.color = color;
+        this.score = 0;
+    }
+
+    updateScore () {
+        this.score++;
+        console.log(this.score);
+    }
+
+    resetScore () {
+        this.score = 0;
     }
 }
-
-
-
