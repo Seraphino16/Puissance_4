@@ -47,9 +47,9 @@ td {
 .buttonsContainer {
     padding: 8px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    /* justify-content: space-between; */
+    justify-content: space-evenly;
 }
 
 button {

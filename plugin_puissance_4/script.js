@@ -17,6 +17,7 @@ class Puissance4 {
 
         this.player1 = new Player(1, "red");
         this.player2 = new Player(2, "yellow");
+        this.players = [this.player1, this.player2];
 
         this.currentPlayer = this.player1;
 
@@ -95,10 +96,12 @@ class Puissance4 {
 
         let resetScoresButton = document.createElement("button");
         resetScoresButton.innerText = "Reset scores";
+        resetScoresButton.addEventListener("click", () => this.resetScores());
 
 
         div.appendChild(cancelButton);
         div.appendChild(restartButton);
+        div.appendChild(resetScoresButton);
         this.container.appendChild(div);
     }
 
@@ -190,7 +193,6 @@ class Puissance4 {
         this.isFull = true;
         for(let i = 0; i < this.height - 1; i++) {
             for(let j = 0; j < this.width; j++) {
-                console.log(this.table[i][j].id)
                 if(this.table[i][j].id === null) {
                     this.isFull = false;
                 }
@@ -288,6 +290,12 @@ class Puissance4 {
         this.isFull = true;
         this.currentPlayer = this.player1;
     }
+
+    resetScores () {
+        this.players.forEach((player) => {
+            player.resetScore();
+        })
+    }
 }
 
 class Cell {
@@ -348,6 +356,7 @@ class Player {
 
     resetScore () {
         this.score = 0;
+        this.updateScoreDOM();
     }
 
     updateScoreDOM () {
