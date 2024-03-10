@@ -1,15 +1,6 @@
-const container = document.getElementById("container-puissance-4");
-
-document.addEventListener("DOMContentLoaded", () => {
-    let game = new Puissance4(7, 6);
-})
-
-
-
-
 class Puissance4 {
 
-    constructor (width, height) {
+    constructor (container, width = 7, height = 6) {
         this.width = width;
         this.height = height;
         this.container = container;
@@ -54,9 +45,6 @@ class Puissance4 {
         let playerName = document.createElement("p");
         playerName.innerText = "Player " + player.id;
 
-        // let scoreDisplay = document.createElement("p");
-        // scoreDisplay.innerText = "Score : " + player.score + " pts";
-
         div.appendChild(canvas);
         div.appendChild(playerName);
         div.appendChild(player.scoreDisplay);
@@ -70,8 +58,6 @@ class Puissance4 {
 
         this.canvas = document.createElement("canvas");
         this.canvas.style.backgroundColor = this.currentPlayer.color;
-        // canvas.style.width = "40px";
-        // canvas.style.height = "40px";
 
         this.txt = document.createElement("h3");
         this.txt.innerText = "Player " + this.currentPlayer.id + ", it's your turn !";
@@ -314,8 +300,6 @@ class Cell {
 
     createDOM () {
         this.dom = document.createElement("td");
-        // this.dom.style.backgroundColor = this.color;
-        // return this.dom;
     }
 
     updateColor (player) {
@@ -363,3 +347,5 @@ class Player {
          this.scoreDisplay.innerText = "Score : " + this.score + " pts";
     }
 }
+
+export { Puissance4 };
